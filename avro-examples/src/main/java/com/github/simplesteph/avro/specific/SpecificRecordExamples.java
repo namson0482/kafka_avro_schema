@@ -27,7 +27,6 @@ public class SpecificRecordExamples {
         Customer customer = customerBuilder.build();
         System.out.println(customer.toString());
 
-
         // write it out to a file
         final DatumWriter<Customer> datumWriter = new SpecificDatumWriter<>(Customer.class);
 
