@@ -58,7 +58,7 @@ public class GenericRecordExamples {
 //        customerWrong.set("new_field", "foobar");
         // missing required field
         customerWrong.set("height", "blahblah");
-//        customerWrong.set("first_name", "John");
+        customerWrong.set("first_name", "John");
         customerWrong.set("last_name", "Doe");
         customerWrong.set("age", 26);
         customerWrong.set("weight", 26f);
