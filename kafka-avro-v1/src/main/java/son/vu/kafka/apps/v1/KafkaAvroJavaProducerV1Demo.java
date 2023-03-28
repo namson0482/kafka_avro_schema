@@ -11,7 +11,7 @@ import java.util.Properties;
 @Slf4j
 public class KafkaAvroJavaProducerV1Demo {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Properties properties = new Properties();
         // normal producer
         properties.setProperty("bootstrap.servers", "127.0.0.1:9092");
@@ -51,7 +51,8 @@ public class KafkaAvroJavaProducerV1Demo {
                 }
             });
             i++;
-        } while (i<50);
+            Thread.sleep(5);
+        } while (i<1500);
 
         producer.flush();
         producer.close();
