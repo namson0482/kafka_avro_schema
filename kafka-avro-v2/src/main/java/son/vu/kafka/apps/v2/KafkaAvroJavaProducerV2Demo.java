@@ -1,6 +1,6 @@
 package son.vu.kafka.apps.v2;
 
-import com.example.Customer;
+import son.vu.avro.domain.Customer;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;

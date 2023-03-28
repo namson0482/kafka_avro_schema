@@ -1,6 +1,6 @@
 package son.vu.kafka.apps.v2;
 
-import com.example.Customer;
+import son.vu.avro.domain.Customer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
