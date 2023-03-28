@@ -1,6 +1,6 @@
 {
      "type": "record",
-     "namespace": "com.example",
+     "namespace": "son.vu.avro.domain",
      "name": "CustomerV1",
      "fields": [
        { "name": "first_name", "type": "string", "doc": "First Name of Customer" },

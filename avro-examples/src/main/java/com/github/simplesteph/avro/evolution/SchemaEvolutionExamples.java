@@ -1,7 +1,7 @@
 package com.github.simplesteph.avro.evolution;
 
-import com.example.CustomerV1;
-import com.example.CustomerV2;
+import son.vu.avro.domain.CustomerV1;
+import son.vu.avro.domain.CustomerV2;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumReader;

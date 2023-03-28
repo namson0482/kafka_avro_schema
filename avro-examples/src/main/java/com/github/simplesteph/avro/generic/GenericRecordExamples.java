@@ -18,7 +18,7 @@ public class GenericRecordExamples {
         Schema.Parser parser = new Schema.Parser();
         Schema schema = parser.parse("{\n" +
                 "     \"type\": \"record\",\n" +
-                "     \"namespace\": \"com.example\",\n" +
+                "     \"namespace\": \"son.vu.avro.domain\",\n" +
                 "     \"name\": \"Customer\",\n" +
                 "     \"fields\": [\n" +
                 "       { \"name\": \"first_name\", \"type\": \"string\", \"doc\": \"First Name of Customer\" },\n" +

@@ -1,6 +1,6 @@
 package com.github.simplesteph.avro.specific;
 
-import com.example.Customer;
+import son.vu.avro.domain.Customer;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumReader;
