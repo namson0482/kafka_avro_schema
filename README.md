@@ -1,11 +1,14 @@
-# Content
+# Content: Example Avro Schema cooperate with Schema Registry Server.
 
  - Avro examples
  - Kafka Avro Producer & Consumer
  - Schema Evolutions
 
-### Setup
-- Install kafka, registry server
+### Setup Kafka, Zookeeper, Schema Registry and Control-Center
+- Kafka: Broker service
+- Zookeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services.
+- Schema Registry manage the schema.
+- Control-Center: Kafka management.
 ```
 docker-compose up -d
 ```
@@ -25,3 +28,4 @@ curl --silent -X GET http://localhost:8081/subjects | jq
 curl -X GET http://localhost:8081/schemas/ids/1 | jq
 ```
 
+**DONE**
