@@ -32,7 +32,6 @@ public class KafkaAvroJavaConsumerV1Demo {
         kafkaConsumer.subscribe(Collections.singleton(topic));
 
         System.out.println("Waiting for data...");
-
         while (true){
             System.out.println("Polling");
             ConsumerRecords<String, Customer> records = kafkaConsumer.poll(1000);

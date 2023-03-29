@@ -1,5 +1,6 @@
 package son.vu.kafka.apps.v2;
 
+import lombok.extern.slf4j.Slf4j;
 import son.vu.avro.domain.Customer;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.producer.*;
@@ -10,6 +11,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
 
+@Slf4j
 public class KafkaAvroJavaProducerV2Demo {
 
     public static void main(String[] args) throws InterruptedException {
@@ -23,7 +25,7 @@ public class KafkaAvroJavaProducerV2Demo {
         properties.setProperty("value.serializer", KafkaAvroSerializer.class.getName());
         properties.setProperty("schema.registry.url", "http://127.0.0.1:8081");
 
-        Producer<String, Customer> producer = new KafkaProducer<String, Customer>(properties);
+        Producer<String, Customer> producer = new KafkaProducer<>(properties);
 
         String topic = "customer-avro";
         int j = 0;
@@ -54,12 +56,12 @@ public class KafkaAvroJavaProducerV2Demo {
                     topic, customer
             );
 
-            System.out.println(customer);
+            log.info(customer.toString());
             producer.send(producerRecord, new Callback() {
                 @Override
                 public void onCompletion(RecordMetadata metadata, Exception exception) {
                     if (exception == null) {
-                        System.out.println(metadata);
+                        log.info(metadata.toString());
                     } else {
                         exception.printStackTrace();
                     }
