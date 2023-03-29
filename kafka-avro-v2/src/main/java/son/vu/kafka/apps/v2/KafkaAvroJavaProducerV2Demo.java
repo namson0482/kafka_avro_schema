@@ -6,10 +6,7 @@ import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import java.nio.charset.Charset;
-import java.util.Properties;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 public class KafkaAvroJavaProducerV2Demo {
@@ -28,11 +25,11 @@ public class KafkaAvroJavaProducerV2Demo {
         Producer<String, Customer> producer = new KafkaProducer<>(properties);
 
         String topic = "customer-avro";
-        int j = 0;
+        int countDown = 0;
+        int loop = 2000;
+        Scanner sc = new Scanner(System.in);
 
         do {
-
-
             String uuid = UUID.randomUUID().toString();
             String generatedStringOne = "uuid = " + uuid;
             String generatedStringTwo = "uuid = " + uuid;
@@ -43,13 +40,13 @@ public class KafkaAvroJavaProducerV2Demo {
             int c = (int)(Math.random()*(max-min+1)+min);
             // copied from avro examples
             Customer customer = Customer.newBuilder()
-                    .setAge(34)
-                    .setFirstName(generatedStringTwo)
-                    .setLastName(generatedStringOne)
+                    .setAge(new SplittableRandom().nextInt(0, 100))
+                    .setFirstName(generatedStringTwo+"_"+countDown)
+                    .setLastName(generatedStringOne+"_"+countDown)
                     .setHeight(b)
                     .setWeight(c)
                     .setEmail( generatedStringOne + "@gmail.com")
-                    .setPhoneNumber("(123)-456-7890")
+                    .setPhoneNumber("(123)-456-7890"+countDown)
                     .build();
 
             ProducerRecord<String, Customer> producerRecord = new ProducerRecord<String, Customer>(
@@ -57,19 +54,30 @@ public class KafkaAvroJavaProducerV2Demo {
             );
 
             log.info(customer.toString());
-            producer.send(producerRecord, new Callback() {
-                @Override
-                public void onCompletion(RecordMetadata metadata, Exception exception) {
-                    if (exception == null) {
-                        log.info(metadata.toString());
-                    } else {
-                        exception.printStackTrace();
-                    }
+            producer.send(producerRecord, (metadata, exception) -> {
+                if (exception == null) {
+                    log.info(metadata.toString());
+                } else {
+                    exception.printStackTrace();
                 }
             });
-            j++;
-            Thread.sleep(2);
-        } while (j<2000);
+            countDown++;
+            Thread.sleep(1);
+            if(countDown == loop) {
+                System.out.print("Enter value for countDown: ");
+                String value = sc.next();
+                if(value.trim().equalsIgnoreCase("exit")) {
+                    countDown = loop;
+                } else {
+                    try {
+                        loop = Integer.parseInt(value);
+                    } catch (Exception e) {
+
+                    }
+                    countDown = 0;
+                }
+            }
+        } while (countDown<loop);
 
         producer.flush();
         producer.close();
