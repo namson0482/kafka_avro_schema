@@ -1,5 +1,6 @@
 package com.github.simplesteph.avro.generic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.AvroRuntimeException;
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileReader;
@@ -11,6 +12,7 @@ import org.apache.avro.io.DatumWriter;
 import java.io.File;
 import java.io.IOException;
 
+@Slf4j
 public class GenericRecordExamples {
 
     public static void main(String[] args) {
@@ -40,7 +42,7 @@ public class GenericRecordExamples {
         customerBuilder.set("weight", 70.5f);
         customerBuilder.set("automated_email", false);
         GenericData.Record myCustomer = customerBuilder.build();
-        System.out.println(myCustomer);
+        log.info(myCustomer.toString());
 
         // we build our second customer which has defaults
         GenericRecordBuilder customerBuilderWithDefault = new GenericRecordBuilder(schema);
@@ -50,7 +52,7 @@ public class GenericRecordExamples {
         customerBuilderWithDefault.set("height", 175f);
         customerBuilderWithDefault.set("weight", 70.5f);
         GenericData.Record customerWithDefault = customerBuilderWithDefault.build();
-        System.out.println(customerWithDefault);
+        log.info(customerWithDefault.toString());
 
         // we start triggering errors
         GenericRecordBuilder customerWrong = new GenericRecordBuilder(schema);
@@ -65,9 +67,9 @@ public class GenericRecordExamples {
         customerWrong.set("automated_email", 70);
         try {
             GenericData.Record wrong = customerWrong.build();
-            System.out.println(wrong);
+            log.info(wrong.toString());
         } catch (AvroRuntimeException e){
-            System.out.println("Generic Record build did not succeed");
+            log.info("Generic Record build did not succeed");
             e.printStackTrace();
         }
 
@@ -76,10 +78,10 @@ public class GenericRecordExamples {
         try (DataFileWriter<GenericRecord> dataFileWriter = new DataFileWriter<>(datumWriter)) {
             dataFileWriter.create(myCustomer.getSchema(), new File("customer-generic.avro"));
             dataFileWriter.append(myCustomer);
-            System.out.println("Written customer-generic.avro");
+            log.info("Written customer-generic.avro");
             dataFileWriter.close();
         } catch (IOException e) {
-            System.out.println("Couldn't write file");
+            log.info("Couldn't write file");
             e.printStackTrace();
         }
 
@@ -89,14 +91,14 @@ public class GenericRecordExamples {
         GenericRecord customerRead;
         try (DataFileReader<GenericRecord> dataFileReader = new DataFileReader<>(file, datumReader)){
             customerRead = dataFileReader.next();
-            System.out.println("Successfully read avro file");
-            System.out.println(customerRead.toString());
+            log.info("Successfully read avro file");
+            log.info(customerRead.toString());
 
             // get the data from the generic record
-            System.out.println("First name: " + customerRead.get("first_name"));
+            log.info("First name: " + customerRead.get("first_name"));
 
             // read a non existent field
-            System.out.println("Non existent field: " + customerRead.get("not_here"));
+            log.info("Non existent field: " + customerRead.get("not_here"));
         }
         catch(IOException e) {
             e.printStackTrace();

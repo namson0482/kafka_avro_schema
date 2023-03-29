@@ -49,16 +49,13 @@ public class KafkaAvroJavaProducerV2Demo {
                     .setPhoneNumber("(123)-456-7890"+countDown)
                     .build();
 
-            ProducerRecord<String, Customer> producerRecord = new ProducerRecord<String, Customer>(
-                    topic, customer
-            );
-
+            ProducerRecord<String, Customer> producerRecord = new ProducerRecord<>(topic, customer);
             log.info(customer.toString());
             producer.send(producerRecord, (metadata, exception) -> {
                 if (exception == null) {
                     log.info(metadata.toString());
                 } else {
-                    exception.printStackTrace();
+                    log.error(exception.getMessage());
                 }
             });
             countDown++;
