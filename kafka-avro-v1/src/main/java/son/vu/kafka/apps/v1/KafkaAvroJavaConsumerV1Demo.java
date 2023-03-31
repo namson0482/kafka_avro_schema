@@ -1,5 +1,6 @@
 package son.vu.kafka.apps.v1;
 
+import lombok.extern.slf4j.Slf4j;
 import son.vu.avro.domain.Customer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -10,10 +11,12 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import java.util.Collections;
 import java.util.Properties;
 
+@Slf4j
 public class KafkaAvroJavaConsumerV1Demo {
 
-    public static void main(String[] args) {
+    static final String TOPIC = "customer-avro";
 
+    public void receiveMessage() {
         Properties properties = new Properties();
         // normal consumer
         properties.setProperty("bootstrap.servers","127.0.0.1:9092");
@@ -28,20 +31,24 @@ public class KafkaAvroJavaConsumerV1Demo {
         properties.setProperty("specific.avro.reader", "true");
 
         KafkaConsumer<String, Customer> kafkaConsumer = new KafkaConsumer<>(properties);
-        String topic = "customer-avro";
-        kafkaConsumer.subscribe(Collections.singleton(topic));
 
-        System.out.println("Waiting for data...");
+        kafkaConsumer.subscribe(Collections.singleton(TOPIC));
+
+        log.info("Waiting for data...");
         while (true){
-            System.out.println("Polling");
+            log.info("Polling...");
             ConsumerRecords<String, Customer> records = kafkaConsumer.poll(1000);
 
             for (ConsumerRecord<String, Customer> record : records){
                 Customer customer = record.value();
-                System.out.println(customer.toString());
+                log.info(customer.toString());
             }
 
             kafkaConsumer.commitSync();
         }
+    }
+
+    public static void main(String[] args) {
+        new KafkaAvroJavaConsumerV1Demo().receiveMessage();
     }
 }
